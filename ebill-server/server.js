@@ -46,13 +46,15 @@ function sendEBill(response, ebill, uuid) {
   }
 }
 
-MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
+MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.com:23930/heroku_fc1fxdlx", function(error, db) {
+
   assert.equal(error, null);
   console.log("Application successfully connected to database.");
 
   const ebillDAO = new EBillDAO(db);
 
-  app.use(bodyParser.json())
+  app.use(bodyParser.json());
+  app.set('port', (process.env.PORT || 5000));
 
   app.get("/ebill", (request, response) => {
     ebillDAO.loadAll()
@@ -153,7 +155,5 @@ MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
             });
   });
 
-  app.listen(3000, () => {
-    console.log("Server listening on port 3000 ...");
-  });
+  app.listen(app.get('port'), () => console.log(`Server listening on the port ${app.get('port')} ...`));
 });
