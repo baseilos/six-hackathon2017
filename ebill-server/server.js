@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const assert = require('assert');
 const bodyParser = require("body-parser");
+const path = require('path');
 const uuid = require('uuid/v4');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
@@ -53,10 +54,11 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
 
   const ebillDAO = new EBillDAO(db);
 
+  app.use(express.static(path.join(__dirname, "../ebill-client")));
   app.use(bodyParser.json());
   app.set('port', (process.env.PORT || 5000));
 
-  app.get("/ebill", (request, response) => {
+  app.get("/api/ebill", (request, response) => {
     ebillDAO.loadAll()
             .toArray() // if 'toArray' is called without arguments, it returns a promise
             .then((documents) => {
@@ -64,7 +66,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
             })
   });
 
-  app.get("/ebill/:id", (request, response) => {
+  app.get("/api/ebill/:id", (request, response) => {
     const ebillId = request.params["id"];
 
     ebillDAO.load(ebillId)
@@ -80,7 +82,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
             });
   })
 
-  app.post("/ebill", (request, response) => {
+  app.post("/api/ebill", (request, response) => {
     const ebill = request.body;
     try {
       validateProperties(ebill);
@@ -101,7 +103,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
     }
   })
 
-  app.post("/ebill/:id/pay", (request, response) => {
+  app.post("/api/ebill/:id/pay", (request, response) => {
     const uuid = request.params["id"];
     const status = statusEnum.PAID;
     const paidTime = moment().format("DD.MM.YYYY HH:mm:ss");
@@ -128,7 +130,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
             });
   });
 
-  app.post("/ebill/:id/reject", (request, response) => {
+  app.post("/api/ebill/:id/reject", (request, response) => {
     const uuid = request.params["id"];
     const status = statusEnum.REJECTED;
     const rejectedTime = moment().format("DD.MM.YYYY HH:mm:ss");
@@ -156,7 +158,8 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
   });
 
   app.get("/", (request, response) => {
-    response.send("Bil-o-lution app")
+    response.send(path.join(__dirname, "../ebill-client/index.html"))
   })
+
   app.listen(app.get('port'), () => console.log(`Server listening on the port ${app.get('port')} ...`));
 });
