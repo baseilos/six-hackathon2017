@@ -11,10 +11,11 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
   };
 
   $scope.payBill = function(bill) {
-    if (isReadOnly(bill)) {
+    if ($scope.isReadOnly(bill)) {
       console.log('Bill ' + bill.uuid + ' is read only!');
+      return;
     }
-    
+
     $http({
       method: 'POST',
       url: 'api/ebill/' + bill.uuid +'/pay',
@@ -24,8 +25,9 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
   };
 
   $scope.rejectBill = function(bill) {
-    if (isReadOnly(bill)) {
+    if ($scope.isReadOnly(bill)) {
       console.log('Bill ' + bill.uuid + ' is read only!');
+      return;
     }
 
     $http({
