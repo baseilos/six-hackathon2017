@@ -1,0 +1,21 @@
+*.error-message {
+	color: red;
+	font-weight: bold;
+}
+
+*.cursor-pointer {
+	cursor: pointer;
+}
+
+span.color_red {
+	color: red;
+}
+
+span.color_green {
+	color: green;
+}
+
+span.color_yellow {
+	color: yellow;
+}
+
