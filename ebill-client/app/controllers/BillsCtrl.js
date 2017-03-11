@@ -6,7 +6,7 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
       url: 'api/ebill',
     }).then(function success(response) {
       console.log('Ebill data loaded: ' + JSON.stringify(response));
-        $scope.bills = response; 
+        $scope.bills = response.data; 
     }); 
   };
 
