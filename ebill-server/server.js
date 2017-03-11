@@ -8,6 +8,16 @@ const MongoClient = mongodb.MongoClient;
 const moment = require('moment');
 const EBillDAO = require("./ebillDAO");
 
+const actionEnum = {
+  PAY : "pay",
+  REJECT : "reject"
+}
+
+const statusEnum = {
+  OPEN : "open",
+  PAID : "paid",
+  REJECTED : "rejected"
+}
 
 function validateProperty(ebill, property) {
   if (!ebill[property]) {
@@ -22,6 +32,18 @@ function validateProperties(ebill) {
   validateProperty(ebill, "amount");
   validateProperty(ebill, "currency");
   validateProperty(ebill, "dueDate");
+}
+
+function validateAction(ebill) {
+  return ebill.status === statusEnum.OPEN;
+}
+
+function sendEBill(response, ebill, uuid) {
+  if (ebill != null) {
+    response.send(ebill);
+  } else {
+    response.send(`An ebill with uuid '${uuid}' could not be found.`);
+  }
 }
 
 MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
@@ -41,7 +63,7 @@ MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
   });
 
   app.get("/ebill/:id", (request, response) => {
-    ebillId = request.params["id"];
+    const ebillId = request.params["id"];
 
     ebillDAO.load(ebillId)
             .then((result) => {
@@ -61,7 +83,7 @@ MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
     try {
       validateProperties(ebill);
       ebill.uuid = uuid();
-      ebill.status = "open";
+      ebill.status = statusEnum.OPEN;
       ebill.openTime = moment().format("DD.MM.YYYY HH:mm:ss");
 
       ebillDAO.save(ebill)
@@ -79,34 +101,56 @@ MongoClient.connect('mongodb://localhost:27017/ebill', function(error, db) {
 
   app.post("/ebill/:id/pay", (request, response) => {
     const uuid = request.params["id"];
-    const properties = { "status" : "paid", "paidTime" : moment().format("DD.MM.YYYY HH:mm:ss")};
-    ebillDAO.update(uuid, properties)
-            .then(() => {
-              return ebillDAO.load(uuid);
-            })
-            .then((ebill) => {
-              if (ebill != null) {
-                response.send(ebill);
-              } else {
+    const status = statusEnum.PAID;
+    const paidTime = moment().format("DD.MM.YYYY HH:mm:ss");
+    let ebill = null;
+
+    ebillDAO.load(uuid)
+            .then((result) => {
+              ebill = result;
+              if (result == null) {
                 response.send(`An ebill with uuid '${uuid}' could not be found.`);
+                return; // we need to call return here, otherwise another response would be sent and it would lead to a warning
+              } else if (validateAction(ebill)) {
+                ebillDAO.update(uuid, { "status" : status, "paidTime" : paidTime})
+                        .then(() => {
+                          ebill.status = status;
+                          ebill.paidTime = paidTime;
+                        });
               }
-            })
+
+              sendEBill(response, ebill, uuid);
+            }, (error) => {
+              console.error("Error while loading a document: " + error);
+              response.send(`An ebill with uuid '${uuid}' could not be loaded.`)
+            });
   });
 
   app.post("/ebill/:id/reject", (request, response) => {
     const uuid = request.params["id"];
-    const properties = { "status" : "rejected", "rejectedTime" : moment().format("DD.MM.YYYY HH:mm:ss")};
-    ebillDAO.update(uuid, properties)
-            .then(() => {
-              return ebillDAO.load(uuid);
-            })
-            .then((ebill) => {
-              if (ebill != null) {
-                response.send(ebill);
-              } else {
+    const status = statusEnum.REJECTED;
+    const rejectedTime = moment().format("DD.MM.YYYY HH:mm:ss");
+    let ebill = null;
+
+    ebillDAO.load(uuid)
+            .then((result) => {
+              ebill = result;
+              if (result == null) {
                 response.send(`An ebill with uuid '${uuid}' could not be found.`);
+                return; // we need to call return here, otherwise another response would be sent and it would lead to a warning
+              } else if (validateAction(ebill)) {
+                ebillDAO.update(uuid, { "status" : status, "rejectedTime" : rejectedTime})
+                        .then(() => {
+                          ebill.status = status;
+                          ebill.rejectedTime = rejectedTime;
+                        })
               }
-            })
+
+              sendEBill(response, ebill, uuid);
+            }, (error) => {
+              console.error("Error while loading a document: " + error);
+              response.send(`An ebill with uuid '${uuid}' could not be loaded.`)
+            });
   });
 
   app.listen(3000, () => {
