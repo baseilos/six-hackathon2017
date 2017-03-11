@@ -5,8 +5,8 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
       method: 'GET',
       url: 'api/ebill',
     }).then(function success(response) {
-      console.log('Ebill data loaded: ' + response);
-        $rootScope.bills = response; 
+      console.log('Ebill data loaded: ' + JSON.stringify(response));
+        $scope.bills = response; 
     }); 
   };
 
@@ -19,7 +19,6 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
   };
 
   $scope.statusStyle = function(bill) {
-    console.log('Fantomas');
     return {'open': 'color_yellow', 'paid': 'color_green', 'rejected': 'color_red'}[bill.status];
   };
 
