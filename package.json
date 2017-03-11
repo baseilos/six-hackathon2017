@@ -2,9 +2,12 @@
   "repository": {
     "type": "git"
   },
-  "name": "hackathon",
+  "name": "Bill-o-lution",
   "version": "1.0.0",
   "main": "server.js",
+  "scripts": {
+    "start": "node ebill-server/server.js"
+  },
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.1",
