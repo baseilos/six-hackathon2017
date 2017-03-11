@@ -155,5 +155,8 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
             });
   });
 
+  app.get("/", (request, response) => {
+    response.send("Bil-o-lution app")
+  })
   app.listen(app.get('port'), () => console.log(`Server listening on the port ${app.get('port')} ...`));
 });
