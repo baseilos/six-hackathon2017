@@ -19,7 +19,7 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
   };
 
   $scope.statusStyle = function(bill) {
-    return {'open': 'color_yellow', 'paid': 'color_green', 'rejected': 'color_red'}[bill.status];
+    return {'open': 'color_orange', 'paid': 'color_green', 'rejected': 'color_red'}[bill.status];
   };
 
 

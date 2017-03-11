@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="list-group" ng-hide="isBillShowing()">
-		<div ng-repeat="bill in bills" ng-swipe-left="rejectBill(bill)" ng-swipe-right="payBill(bill)" ng-click="showBill(bill)">
+		<div ng-repeat="bill in bills" ng-swipe-left="rejectBill(bill)" ng-swipe-right="payBill(bill)">
 		<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 			<div class="d-flex w-100 justify-content-between">
 				<div class="span12">
@@ -10,7 +10,7 @@
 				<div class="clearfix"></div>
 		    	<p class="mb-1">{{bill.currency}} {{bill.amount}}</p>
 		    	<div class="span12">
-		    		<p class="mb-1 pull-right" ng-style="statusStyle(bill)">{{bill.status}}</p>
+		    		<p class="mb-1 pull-right" ng-class="statusStyle(bill)">{{bill.status}}</p>
 		    	</div>
 		    	<div class="clearfix"></div>
 		    </div>

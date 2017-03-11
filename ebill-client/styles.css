@@ -7,15 +7,15 @@
 	cursor: pointer;
 }
 
-span.color_red {
+*.color_red {
 	color: red;
 }
 
-span.color_green {
+*.color_green {
 	color: green;
 }
 
-span.color_yellow {
-	color: yellow;
+*.color_orange {
+	color: orange;
 }
 
