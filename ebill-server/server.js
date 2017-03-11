@@ -6,7 +6,7 @@ const uuid = require('uuid/v4');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const moment = require('moment');
-const EBillDAO = require("./ebillDAO");
+const EBillDAO = require("./eBillDAO");
 
 const actionEnum = {
   PAY : "pay",
