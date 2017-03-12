@@ -8,14 +8,18 @@
 		    		<h5 class="mb-1 pull-right">{{bill.senderIdentification}}</h5>
 				</div>
 				<div class="clearfix"></div>
-				<div class="span12">
-		    		<h4 class="mb-1 pull-left">Due {{bill.dueDate}}</h4>
-		    		<h4 class="mb-1 pull-right" ng-hide="isReadOnly(bill)">{{getDueDays(bill)}}</h4>
+				<div class="span12" ng-hide="isReadOnly(bill)">
+		    		<h4 class="mb-1 pull-left">Due {{getDueDays(bill)}}</h4>
+		    		<h4 class="mb-1 pull-right">{{bill.dueDate}}</h4>
 		    	</div>
 		    	<div class="clearfix"></div>
 		    	<div class="span12">
 		    		<h3 class="mb-1 pull-left">{{bill.currency}} {{bill.amount}}</h3>
 		    		<h3 class="mb-1 pull-right" ng-class="statusStyle(bill)">{{bill.status}}</h3>
+		    	</div>
+		    	<div class="clearfix"></div>
+		    	<div class="span12" ng-show="isReadOnly(bill)">
+		    		<h4 class="mb-1 pull-right">{{getReadonlyDays(bill)}}</h4>
 		    	</div>
 		    	<div class="clearfix"></div>
 		    </div>

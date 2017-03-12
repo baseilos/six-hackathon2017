@@ -35,8 +35,8 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
       method: 'POST',
       url: 'api/ebill/' + bill.uuid +'/reject',
     }).then(function success(response) {
-      console.log('Ebill ' + bill.uuid + ' reject');
-      bill.status = 'reject';
+      console.log('Ebill ' + bill.uuid + ' rejected');
+      bill.status = 'rejected';
     }); 
   };
 
@@ -50,6 +50,10 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
 
   $scope.getDueDays = function(bill) {
     return moment(bill.dueDate, ["YYYY-MM-DD"]).fromNow();
+  }
+
+  $scope.getReadonlyDays = function(bill) {
+    return moment.unix(bill.status == 'rejected' ? bill.rejectedTime : bill.paidTime).fromNow();
   }
 
 

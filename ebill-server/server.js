@@ -106,7 +106,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
   app.post("/api/ebill/:id/pay", (request, response) => {
     const uuid = request.params["id"];
     const status = statusEnum.PAID;
-    const paidTime = moment().format("DD.MM.YYYY HH:mm:ss");
+    const paidTime = moment().unix();
     let ebill = null;
 
     ebillDAO.load(uuid)
