@@ -21,7 +21,7 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
       url: 'api/ebill/' + bill.uuid +'/pay',
     }).then(function success(response) {
       console.log('Ebill ' + bill.uuid + ' paid');
-      bill.status = 'paid';
+      $scope.loadData();
     }); 
   };
 
@@ -36,7 +36,7 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
       url: 'api/ebill/' + bill.uuid +'/reject',
     }).then(function success(response) {
       console.log('Ebill ' + bill.uuid + ' rejected');
-      bill.status = 'rejected';
+      $scope.loadData();
     }); 
   };
 
