@@ -48,6 +48,10 @@ myApp.controller('BillsCtrl', ['$rootScope', '$scope', '$location', 'LoginServic
     return bill.status !== 'open';
   }
 
+  $scope.getDueDays = function(bill) {
+    return moment(bill.dueDate, ["YYYY-MM-DD"]).fromNow();
+  }
+
 
   $scope.loadData();
 

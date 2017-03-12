@@ -17,7 +17,7 @@ function EBillDAO(database) {
   }
 
   this.loadAll = function() {
-    return this.collection.find();
+    return this.collection.find().sort({'dueDate': 1});
   }
 
   this.update = function(uuid, properties) {

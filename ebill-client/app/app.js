@@ -25,17 +25,12 @@ var myApp = angular.module('myApp', ['ngMessages', 'ngRoute', 'ngTouch'], functi
     })
 })
 .run(function ($rootScope, $location) {
-$rootScope.loggedUser = {username: 'testUser'};
 
   $rootScope.$on("$routeChangeStart", function (event, next, current) {
-    if ($rootScope.loggedUser == null) {
-      // Show welcome page if user is not logged in
-      $location.path('/welcome');
-    } else {
+    $rootScope.loggedUser = {username: 'johndoe', name: 'John Doe'};
       // User is logged, block non-admins from accessing users section
       if (next.originalPath == '/users' && $rootScope.loggedUser.role !== 'admin') {
-        $location.path('/welcome_logged');
+        $location.path('/bills');
       }
-    }
   });
 });

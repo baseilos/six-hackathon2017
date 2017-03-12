@@ -16,6 +16,7 @@
    	<script src="https://code.angularjs.org/1.6.2/angular-messages.js"></script>
    	<script src="https://code.angularjs.org/1.6.2/angular-route.js"></script>
     <script src="https://code.angularjs.org/1.6.2/angular-touch.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
 
    	<!-- Application -->
    	<script src="app/app.js"></script>
@@ -41,30 +42,29 @@
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
 	      <a class="navbar-brand brand-name" href="#">
           Bill-o-lotion
         </a>
 	    </div>
 
-      <ul class="nav navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#/bills">My Bills</a>
-          </li>
-      </ul>
-
-    	<form name="loginForm" class="navbar-form navbar-right navbar-input-group" ng-hide="loggedUser != null">
-      		<div class="form-group">
-    			<input type="text" class="form-control" placeholder="Username" ng-model="loginUsername" required>
-    			<input type="password" class="form-control" placeholder="Password" ng-model="loginPassword" required>
-  			</div>
-  			<button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
-    	</form>
-
-      <form class="navbar-form navbar-right navbar-input-group" ng-show="loggedUser != null">
-      	Hello 
-        <a href="#profile" title="Update your profile">{{ loggedUser.username }}</a>
-      <button type="submit" class="btn btn-default" ng-click="logout()">Logout</button>
+      <form class="navbar-form navbar-right navbar-input-group">
+        Hello 
+        <b>{{ loggedUser.name }}</b>
      </form>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#/bills">My Bills</a>
+            </li>
+        </ul>
+      </div>
 		</nav>
 
 	   <ng-view />

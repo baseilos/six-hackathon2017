@@ -88,7 +88,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
       validateProperties(ebill);
       ebill.uuid = uuid();
       ebill.status = statusEnum.OPEN;
-      ebill.openTime = moment().format("DD.MM.YYYY HH:mm:ss");
+      ebill.openTime = moment().unix();
 
       ebillDAO.save(ebill)
               .then(() => {
@@ -133,7 +133,7 @@ MongoClient.connect("mongodb://NortonCommander86:SIXHackathon2017@ds123930.mlab.
   app.post("/api/ebill/:id/reject", (request, response) => {
     const uuid = request.params["id"];
     const status = statusEnum.REJECTED;
-    const rejectedTime = moment().format("DD.MM.YYYY HH:mm:ss");
+    const rejectedTime = moment().unix();
     let ebill = null;
 
     ebillDAO.load(uuid)
